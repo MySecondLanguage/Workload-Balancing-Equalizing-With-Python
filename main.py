@@ -17,13 +17,7 @@ def getLastGroup(filename):
         groupList.append(group)
     return groupList[-1]
 
-def getPreviousGroup(filename):
-    row = readCSV(filename)
-    groupList = []
-    for group in row:
-        group = group[-1]
-        groupList.append(group)
-    return groupList[-1]
+
 
 
 
@@ -34,17 +28,6 @@ def getLastDay(filename):
         date = date[0]
         dateList.append(date)
     return dateList[-1]
-
-def getPreviousDay(filename):
-    row = readCSV(filename)
-    dateList = []
-    for date in row:
-        date = date[0]
-        dateList.append(date)
-    return dateList[-2]
-
-
-
 
 
 
@@ -115,7 +98,7 @@ def zGroup(zFile):
     employe_dict = {}
     employe_dict['date'] = today
 
-    row = readCSV(xFile)
+    row = readCSV(zFile)
     ID_LIST = []
     NAME_LIST = []
     for id, name in row:
@@ -140,7 +123,7 @@ def zGroup(zFile):
         # csv_writer.writeheader(field_name)
         csv_writer.writerow(employe_dict)
 
-def main(filename):
+def process(filename):
 
     xFile = 'x.csv'
     yFile = 'y.csv'
@@ -148,23 +131,26 @@ def main(filename):
 
     today = pendulum.today().strftime('%d/%m/%Y')
     lastDay = getLastDay(filename)
-    previousDay = getPreviousDay(filename)
     lastGroup = getLastGroup(filename)
-    previousGroup = getPreviousDay(filename)
-
-
     if lastDay < today and lastGroup == 'groupZ':
-        print('next job for GroupX')
+        print('GroupZ successfully finished their jobs on {}'.format(today))
         xGroup(xFile)
     elif lastDay < today and lastGroup == 'groupX':
-        print('next jobs for groupY')
+        print('groupY successfully finished their jobs on {}'.format(today))
         yGroup(yFile)
     elif lastDay < today and lastGroup == 'groupY':
-        print('next job for groupZ')
+        print('groupZ successfully finished their jobs on {}'.format(today))
         zGroup(zFile)
     else:
-        print("today's job already been done")
+        print("today's job already been finished by a group")
 
+
+def main(filename):
+    xFile = 'x.csv'
+    try:
+        process(filename)
+    except Exception:
+        xGroup(xFile)
 
 output = 'output.csv'
 main(output)
