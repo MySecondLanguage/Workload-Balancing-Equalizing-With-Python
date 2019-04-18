@@ -1,6 +1,18 @@
 import csv
 from datetime import datetime
 import pendulum
+import re
+
+def cleanedDate():
+    while True:
+        string = input('date :')
+        dateValidator = re.compile('(\d{2}\/\d{2}\/\d{4})')
+        result = dateValidator.match(string)
+        if result is None:
+            print('Your Date Pattern is wrong \n it should be dd/mm/yyyy format \n please try again')
+        else:
+            return string
+            break
 
 def readCSV(filename):
     with open(filename, "r") as csvf:
@@ -32,7 +44,7 @@ def getLastDay(filename):
 
 
 def xGroup(xFile):
-    today = str(input('Note: if you are in Xgroup, submit your working date in this formate dd/mm/yyyy \n Xgroup Date:'))
+    today = cleanedDate()
     employe_dict = {}
     employe_dict['date'] = today
 
@@ -63,7 +75,7 @@ def xGroup(xFile):
 
 
 def yGroup(yFile):
-    today = str(input('Note: if you are in Ygroup, submit your working date in this formate dd/mm/yyyy \n Ygroup Date:'))
+    today = cleanedDate()
     employe_dict = {}
     employe_dict['date'] = today
 
@@ -94,7 +106,7 @@ def yGroup(yFile):
 
 
 def zGroup(zFile):
-    today = str(input('Note: if you are in Zgroup, submit your working date in this formate dd/mm/yyyy \n Zgroup Date:'))
+    today = cleanedDate()
     employe_dict = {}
     employe_dict['date'] = today
 
@@ -133,16 +145,16 @@ def process(filename):
     lastDay = getLastDay(filename)
     lastGroup = getLastGroup(filename)
     if lastDay < today and lastGroup == 'groupZ':
-        print('GroupZ successfully finished their jobs on {}'.format(today))
+        print('GroupZ successfully finished their jobs on {} \n so if you are in Xgroup, submit your Date \n Otherwise ignor it'.format(lastDay))
         xGroup(xFile)
     elif lastDay < today and lastGroup == 'groupX':
-        print('groupY successfully finished their jobs on {}'.format(today))
+        print('groupX successfully finished their jobs on {} so if you are in Ygroup, submit your date \n otherwise, ignore it'.format(lastDay))
         yGroup(yFile)
     elif lastDay < today and lastGroup == 'groupY':
-        print('groupZ successfully finished their jobs on {}'.format(today))
+        print('groupY successfully finished their jobs on {} \n so if you are in Zgroup, \n otherwise ignore it'.format(lastDay))
         zGroup(zFile)
-    else:
-        print("today's job already been finished by a group")
+    elif lastDay == today:
+        print("today {} , the job already been finished by {} \n please try again in next day".format(today, lastGroup))
 
 
 def main(filename):
