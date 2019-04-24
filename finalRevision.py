@@ -70,19 +70,19 @@ def main(xfile, yfile, zfile):
     i = 0
     for date in daterange:
         if i % 3 == 0:
-            x = [str(date)] + XLIST
+            x = [date.strftime('%Y/%m/%d')] + XLIST
             print(x)
             with open("output.csv", 'a') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(x)
         elif i % 3 == 1:
-            y = [str(date)] + YLIST
+            y = [date.strftime('%Y/%m/%d')] + YLIST
             print(y)
             with open("output.csv", 'a') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(y)
         else:
-            z = [str(date)] + ZLIST
+            z = [date.strftime('%Y/%m/%d')] + ZLIST
             print(z)
             with open("output.csv", 'a') as csvFile:
                 writer = csv.writer(csvFile)
